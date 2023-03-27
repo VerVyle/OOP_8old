@@ -5,4 +5,7 @@ module com.vervyle.oop_last {
 
     opens com.vervyle.oop_last to javafx.fxml;
     exports com.vervyle.oop_last;
+    exports com.vervyle.oop_last.controllers;
+    opens com.vervyle.oop_last.controllers to javafx.fxml;
+    exports com.vervyle.oop_last.drawable;
 }

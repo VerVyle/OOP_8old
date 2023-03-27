@@ -1,2 +1,5 @@
-package com.vervyle.oop_last.drawable;public interface Savable {
+package com.vervyle.oop_last.drawable;
+
+public interface Savable {
+    void save();
 }

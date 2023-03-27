@@ -1,4 +1,4 @@
-package com.vervyle.lw8_oop.containers;
+package com.vervyle.oop_last.containers;
 
 public class Node<E> {
     E value;

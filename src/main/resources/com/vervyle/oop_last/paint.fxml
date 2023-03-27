@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.ContextMenu?>
@@ -13,9 +12,9 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -24,9 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0"
-            prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.vervyle.lw8_oop.controllers.PaintController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.vervyle.oop_last.controllers.PaintController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>
@@ -34,44 +31,43 @@
                     <menus>
                         <Menu mnemonicParsing="false" text="File">
                             <items>
-                                <MenuItem fx:id="menu_save" mnemonicParsing="false" onAction="#onSave" text="Save"/>
-                                <MenuItem fx:id="menu_load" mnemonicParsing="false" onAction="#onLoad" text="Load"/>
-                                <MenuItem fx:id="menu_exit" mnemonicParsing="false" onAction="#onClose" text="Close"/>
+                                <MenuItem mnemonicParsing="false" onAction="#onSave" text="Save" />
+                                <MenuItem mnemonicParsing="false" onAction="#onLoad" text="Load" />
+                                <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Edit">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Delete"/>
+                                <MenuItem mnemonicParsing="false" text="Delete" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Help">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="About"/>
+                                <MenuItem mnemonicParsing="false" text="About" />
                             </items>
                         </Menu>
                     </menus>
                 </MenuBar>
                 <ToolBar prefHeight="40.0" prefWidth="200.0">
                     <items>
-                        <HBox alignment="CENTER_LEFT" prefHeight="0.0" prefWidth="1900.0" spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="0.0" spacing="10.0">
                             <children>
-                                <ListView fx:id="tool_element_list" prefHeight="0.0" prefWidth="140.0">
+                                <ListView fx:id="toolElementsList" prefHeight="0.0" prefWidth="140.0">
                                     <opaqueInsets>
-                                        <Insets/>
+                                        <Insets />
                                     </opaqueInsets>
                                     <cursor>
-                                        <Cursor fx:constant="HAND"/>
+                                        <Cursor fx:constant="HAND" />
                                     </cursor>
                                     <padding>
-                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                     </padding>
                                 </ListView>
-                                <ColorPicker fx:id="tool_color"/>
-                                <TextField fx:id="tool_value" prefHeight="25.0" prefWidth="90.0" text="20"/>
-                                <Separator orientation="VERTICAL" prefHeight="200.0"/>
-                                <CheckBox fx:id="tool_ctrl_enable" mnemonicParsing="false" text="Включить CTRL"/>
-                                <CheckBox fx:id="tool_groups_enable" mnemonicParsing="false"
-                                          text="Выделять пересечение"/>
+                                <ColorPicker fx:id="toolColorPicker" />
+                                <TextField fx:id="toolValue" prefHeight="25.0" prefWidth="90.0" text="20" />
+                                <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                <CheckBox fx:id="toolCtrlEnable" mnemonicParsing="false" text="Включить CTRL" />
+                                <CheckBox fx:id="toolGroupSelectionEnable" mnemonicParsing="false" text="Выделять пересечение" />
                             </children>
                         </HBox>
                     </items>
@@ -80,80 +76,80 @@
         </VBox>
     </top>
     <bottom>
-        <HBox prefHeight="40.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
+        <HBox BorderPane.alignment="CENTER">
             <children>
-                <ToolBar prefHeight="40.0" prefWidth="1920.0">
+                <ToolBar prefHeight="35.0" prefWidth="1920.0">
                     <items>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/three-arrows.png"/>
+                                <Image url="@../images/three-arrows.png" />
                             </image>
                         </ImageView>
-                        <Label fx:id="tool_mouse_location" prefHeight="25.0" prefWidth="130.0" text="x : 0, y: 0"
-                               textAlignment="CENTER">
+                        <Label fx:id="toolMousePos" prefHeight="25.0" prefWidth="130.0" text="x : 0, y: 0" textAlignment="CENTER">
                             <font>
-                                <Font size="16.0"/>
+                                <Font size="16.0" />
                             </font>
                         </Label>
                         <Separator orientation="VERTICAL" prefWidth="0.0">
                             <padding>
-                                <Insets top="5.0"/>
+                                <Insets top="5.0" />
                             </padding>
                         </Separator>
                         <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/maximize.png"/>
+                                <Image url="@../images/maximize.png" />
                             </image>
                         </ImageView>
-                        <Label fx:id="tool_pane_size" prefHeight="25.0" prefWidth="93.0" text="1920 x 1080"
-                               textAlignment="CENTER">
+                        <Label text="x :">
                             <font>
-                                <Font size="16.0"/>
+                                <Font size="16.0" />
                             </font>
                         </Label>
-                        <Separator orientation="VERTICAL" prefWidth="0.0"/>
+                        <TextField fx:id="toolPaneX" prefHeight="25.0" prefWidth="60.0" />
+                        <Label text="y :">
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="toolPaneY" prefHeight="25.0" prefWidth="60.0" />
+                        <Separator orientation="VERTICAL" prefWidth="0.0" />
                         <Label prefHeight="25.0" prefWidth="50.0" text="100%">
                             <font>
-                                <Font size="16.0"/>
+                                <Font size="16.0" />
                             </font>
                         </Label>
-                        <Button fx:id="tool_scale_minus" mnemonicParsing="false" prefHeight="10.0" prefWidth="10.0"
-                                text="-">
-                            <font>
-                                <Font size="16.0"/>
-                            </font>
-                        </Button>
-                        <Slider/>
-                        <Button fx:id="tool_scale_plus" mnemonicParsing="false" prefHeight="10.0" prefWidth="10.0"
-                                text="+">
-                            <font>
-                                <Font size="16.0"/>
-                            </font>
-                        </Button>
                     </items>
                     <HBox.margin>
-                        <Insets/>
+                        <Insets />
                     </HBox.margin>
                 </ToolBar>
             </children>
         </HBox>
     </bottom>
     <center>
-        <ScrollPane fx:id="scroll_pane" prefHeight="1080.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
+        <ScrollPane fx:id="scrollPane" BorderPane.alignment="CENTER">
             <content>
-                <AnchorPane fx:id="main_pane" minHeight="0.0" minWidth="0.0" prefHeight="1440.0" prefWidth="2560.0">
+                <AnchorPane fx:id="mainPane" prefHeight="1440.0" prefWidth="2560.0">
                     <opaqueInsets>
-                        <Insets/>
+                        <Insets />
                     </opaqueInsets>
                 </AnchorPane>
             </content>
             <contextMenu>
                 <ContextMenu>
                     <items>
-                        <MenuItem fx:id="menu_deselect_all" mnemonicParsing="false" text="Очистить выделение"/>
+                        <MenuItem fx:id="menuDeselectAll" mnemonicParsing="false" text="Очистить выделение" />
+                        <MenuItem fx:id="menuSelectAll" mnemonicParsing="false" text="Выделить все" />
                     </items>
                 </ContextMenu>
             </contextMenu>
         </ScrollPane>
     </center>
+    <right>
+        <AnchorPane prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <TreeView fx:id="treeView" layoutX="20.0" layoutY="165.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            </children>
+        </AnchorPane>
+    </right>
 </BorderPane>

@@ -1,2 +1,8 @@
-package com.vervyle.oop_last.commands;public class Command {
+package com.vervyle.oop_last.commands;
+
+public abstract class Command {
+
+    public abstract void execute();
+
+    public abstract void undo();
 }

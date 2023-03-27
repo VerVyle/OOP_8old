@@ -1,8 +1,13 @@
-package com.vervyle.oop_last.drawable;
+package com.vervyle.oop_last.drawable.leafs;
 
+import com.vervyle.oop_last.drawable.Element;
+import com.vervyle.oop_last.drawable.Point2D;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class RegularPolygon extends Element {
@@ -10,7 +15,19 @@ public abstract class RegularPolygon extends Element {
     protected Point2D center;
     protected double radius;
     protected Shape shape;
-    protected List<Double> vertices;
+    protected double[] vertices;
+    protected int numOfVertices;
+
+    public RegularPolygon() {
+    }
+
+    public RegularPolygon(Pane pane, Point2D center, double radius, Color color) {
+        super(false, pane);
+        this.color = color;
+        this.center = center;
+        this.radius = radius;
+        numOfVertices = 0;
+    }
 
     @Override
     public boolean intersects(Point2D point2D) {
@@ -67,5 +84,13 @@ public abstract class RegularPolygon extends Element {
         if (center.x() - radius < 0 || center.x() + radius > pane.getWidth())
             return true;
         return center.y() - radius < 0 || center.y() + radius > pane.getHeight();
+    }
+
+    @Override
+    public void updateShape() {
+        hide();
+        shape = new Polygon(vertices);
+        shape.setFill(color);
+        show();
     }
 }
