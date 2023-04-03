@@ -7,9 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
-import java.util.Arrays;
-import java.util.List;
-
 public abstract class RegularPolygon extends Element {
     protected Color color;
     protected Point2D center;
@@ -27,11 +24,12 @@ public abstract class RegularPolygon extends Element {
         this.center = center;
         this.radius = radius;
         numOfVertices = 0;
+        updateShape();
     }
 
     @Override
     public boolean intersects(Point2D point2D) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -51,17 +49,33 @@ public abstract class RegularPolygon extends Element {
     }
 
     @Override
+    public void select() {
+        super.select();
+        shape.setStyle("-fx-stroke: #FF0000; -fx-stroke-width: 3px");
+    }
+
+    @Override
+    public void deselect() {
+        super.deselect();
+        shape.setStyle("-fx-stroke: #000000; -fx-stroke-width: 3px");
+    }
+
+    @Override
     public void resize(double newRadius) {
-        if (isOutOfPane(newRadius))
-            System.out.printf("Cannot resize element (" + this.toString() + "), it doesn't fit pane size");
+        if (isOutOfPane(newRadius)) {
+            System.out.println("Cannot resize element (" + this.toString() + "), it doesn't fit pane size");
+            return;
+        }
         radius = newRadius;
         updateShape();
     }
 
     @Override
     public void move(double deltaX, double deltaY) {
-        if (isOutOfPane(deltaX, deltaY))
+        if (isOutOfPane(deltaX, deltaY)) {
             System.out.println("Cannot move element (" + this.toString() + "), it doesn't fit pane size");
+            return;
+        }
         center = new Point2D(center.x() + deltaX, center.y() + deltaY);
         updateShape();
     }
@@ -81,16 +95,32 @@ public abstract class RegularPolygon extends Element {
 
     @Override
     public boolean isOutOfPane(double newRadius) {
-        if (center.x() - radius < 0 || center.x() + radius > pane.getWidth())
+        if (center.x() - newRadius < 0 || center.x() + newRadius > pane.getWidth())
             return true;
-        return center.y() - radius < 0 || center.y() + radius > pane.getHeight();
+        return center.y() - newRadius < 0 || center.y() + newRadius > pane.getHeight();
     }
 
     @Override
-    public void updateShape() {
+    public final void updateShape() {
         hide();
-        shape = new Polygon(vertices);
+        createShape();
         shape.setFill(color);
         show();
+        if (isSelected())
+            select();
+    }
+
+    public void createShape() {
+        shape = new Polygon(vertices);
+    }
+
+    @Override
+    public void load() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void save() {
+        throw new UnsupportedOperationException();
     }
 }

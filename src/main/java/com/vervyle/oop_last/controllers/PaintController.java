@@ -2,14 +2,6 @@ package com.vervyle.oop_last.controllers;
 
 import com.vervyle.oop_last.drawable.ElementType;
 import com.vervyle.oop_last.drawable.Point2D;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableDoubleValue;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.ObservableValueBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,13 +13,12 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class PaintController implements Initializable {
@@ -76,6 +67,10 @@ public class PaintController implements Initializable {
 
     }
 
+    private double parseValue() {
+        return Double.parseDouble(toolValue.getText());
+    }
+
     private void initPane() {
         paneController = new PaneController(mainPane, toolColorPicker, toolValue, toolElementsList);
         mainPane.setOnMouseClicked(mouseEvent -> {
@@ -83,7 +78,8 @@ public class PaintController implements Initializable {
             if (!mouseEvent.getButton().equals(MouseButton.PRIMARY))
                 return;
             if (!paneController.intersectsAnyElements(point2D)) {
-                paneController.addElement(point2D);
+                ElementType type = toolElementsList.getSelectionModel().getSelectedItem();
+                paneController.addElement(point2D, type);
                 return;
             }
             if (!toolCtrlEnable.isSelected() || !mouseEvent.isControlDown())
@@ -94,6 +90,29 @@ public class PaintController implements Initializable {
             }
             paneController.selectLastCreatedIntersectedElement(point2D);
         });
+        scrollPane.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.getCode().equals(KeyCode.DELETE)) {
+                paneController.deleteSelectedElements();
+                return;
+            }
+            if (keyEvent.getCode().equals(KeyCode.W)) {
+                paneController.moveSelectedElements(PaneController.Direction.UP, parseValue());
+                return;
+            }
+            if (keyEvent.getCode().equals(KeyCode.S)) {
+                paneController.moveSelectedElements(PaneController.Direction.DOWN, parseValue());
+                return;
+            }
+            if (keyEvent.getCode().equals(KeyCode.D)) {
+                paneController.moveSelectedElements(PaneController.Direction.RIGHT, parseValue());
+                return;
+            }
+            if (keyEvent.getCode().equals(KeyCode.A)) {
+                paneController.moveSelectedElements(PaneController.Direction.LEFT, parseValue());
+            }
+        });
+        toolColorPicker.setOnAction(actionEvent -> paneController.changeColorOnSelectedElements(toolColorPicker.getValue()));
+        toolValue.setOnAction(actionEvent -> paneController.resizeSelectedElements(parseValue()));
     }
 
     private void initList() {
@@ -104,5 +123,7 @@ public class PaintController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initList();
         initPane();
+        menuDeselectAll.setOnAction(actionEvent -> paneController.deselectAllElements());
+        menuSelectAll.setOnAction(actionEvent -> paneController.selectAllElements());
     }
 }
