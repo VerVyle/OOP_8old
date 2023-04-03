@@ -115,6 +115,6 @@ public abstract class RegularPolygon extends Element {
 
     @Override
     public void save() {
-        JSO
+
     }
 }
