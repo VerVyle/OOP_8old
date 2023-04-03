@@ -6,6 +6,7 @@ import com.vervyle.oop_last.drawable.Point2D;
 import com.vervyle.oop_last.drawable.leafs.CCircle;
 import com.vervyle.oop_last.drawable.leafs.HHexagon;
 import com.vervyle.oop_last.drawable.leafs.SSquare;
+import com.vervyle.oop_last.drawable.leafs.TTriangle;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
@@ -38,6 +39,9 @@ public class ElementFactoryImpl implements ElementFactory {
             }
             case HEXAGON -> {
                 return new HHexagon(pane, center, radius, color);
+            }
+            case TRIANGLE -> {
+                return new TTriangle(pane, center, radius, color);
             }
             default -> {
                 System.out.println("Unable to create this element");

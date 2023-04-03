@@ -1,6 +1,7 @@
 package com.vervyle.oop_last.drawable.leafs;
 
 import com.vervyle.oop_last.drawable.Point2D;
+import com.vervyle.oop_last.drawable.leafs.utilities.RegularPolygon;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;

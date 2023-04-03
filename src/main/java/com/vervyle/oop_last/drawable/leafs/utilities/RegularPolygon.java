@@ -1,4 +1,4 @@
-package com.vervyle.oop_last.drawable.leafs;
+package com.vervyle.oop_last.drawable.leafs.utilities;
 
 import com.vervyle.oop_last.drawable.Element;
 import com.vervyle.oop_last.drawable.Point2D;
@@ -13,7 +13,7 @@ public abstract class RegularPolygon extends Element {
     protected double radius;
     protected Shape shape;
     protected double[] vertices;
-    protected int numOfVertices;
+    protected VertexInitHelper vertexInitHelper;
 
     public RegularPolygon() {
     }
@@ -23,7 +23,7 @@ public abstract class RegularPolygon extends Element {
         this.color = color;
         this.center = center;
         this.radius = radius;
-        numOfVertices = 0;
+        vertexInitHelper = new VertexInitHelper();
         updateShape();
     }
 
@@ -32,17 +32,11 @@ public abstract class RegularPolygon extends Element {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * ready to use
-     */
     @Override
     public void show() {
         pane.getChildren().add(shape);
     }
 
-    /**
-     * ready to use
-     */
     @Override
     public void hide() {
         pane.getChildren().remove(shape);
@@ -63,7 +57,7 @@ public abstract class RegularPolygon extends Element {
     @Override
     public void resize(double newRadius) {
         if (isOutOfPane(newRadius)) {
-            System.out.println("Cannot resize element (" + this.toString() + "), it doesn't fit pane size");
+            System.out.println("Cannot resize element (" + this + "), it doesn't fit pane size");
             return;
         }
         radius = newRadius;
@@ -73,7 +67,7 @@ public abstract class RegularPolygon extends Element {
     @Override
     public void move(double deltaX, double deltaY) {
         if (isOutOfPane(deltaX, deltaY)) {
-            System.out.println("Cannot move element (" + this.toString() + "), it doesn't fit pane size");
+            System.out.println("Cannot move element (" + this + "), it doesn't fit pane size");
             return;
         }
         center = new Point2D(center.x() + deltaX, center.y() + deltaY);
@@ -121,6 +115,6 @@ public abstract class RegularPolygon extends Element {
 
     @Override
     public void save() {
-        throw new UnsupportedOperationException();
+        JSO
     }
 }
