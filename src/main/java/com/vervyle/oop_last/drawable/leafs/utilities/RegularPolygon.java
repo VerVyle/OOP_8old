@@ -113,8 +113,8 @@ public abstract class RegularPolygon extends Element {
         throw new UnsupportedOperationException();
     }
 
+    // TODO: 03.04.2023 сделать залупу эту уже и сдать
     @Override
     public void save() {
-
     }
 }
