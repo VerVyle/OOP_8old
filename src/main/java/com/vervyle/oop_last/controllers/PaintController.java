@@ -24,6 +24,10 @@ import java.util.ResourceBundle;
 public class PaintController implements Initializable {
 
     @FXML
+    public MenuItem menuGroup;
+    @FXML
+    public MenuItem menuDeGroup;
+    @FXML
     private AnchorPane mainPane;
     @FXML
     private MenuItem menuDeselectAll;
@@ -54,24 +58,26 @@ public class PaintController implements Initializable {
 
     @FXML
     void onClose(ActionEvent event) {
-
+        paneController.deleteAllElements();
     }
 
     @FXML
     void onLoad(ActionEvent event) {
-
+        paneController.loadPane();
     }
 
     @FXML
     void onSave(ActionEvent event) {
-
+        paneController.saveAllElements();
     }
 
     private double parseValue() {
         return Double.parseDouble(toolValue.getText());
     }
 
-    private void initPane() {
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        toolElementsList.getItems().addAll(Arrays.stream(ElementType.values()).filter(elementType -> !elementType.equals(ElementType.GROUP)).toList());
         paneController = new PaneController(mainPane, toolColorPicker, toolValue, toolElementsList);
         mainPane.setOnMouseClicked(mouseEvent -> {
             Point2D point2D = new Point2D(mouseEvent.getX(), mouseEvent.getY());
@@ -113,17 +119,14 @@ public class PaintController implements Initializable {
         });
         toolColorPicker.setOnAction(actionEvent -> paneController.changeColorOnSelectedElements(toolColorPicker.getValue()));
         toolValue.setOnAction(actionEvent -> paneController.resizeSelectedElements(parseValue()));
-    }
-
-    private void initList() {
-        toolElementsList.getItems().addAll(Arrays.stream(ElementType.values()).filter(elementType -> !elementType.equals(ElementType.GROUP)).toList());
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        initList();
-        initPane();
         menuDeselectAll.setOnAction(actionEvent -> paneController.deselectAllElements());
         menuSelectAll.setOnAction(actionEvent -> paneController.selectAllElements());
+        menuGroup.setOnAction(actionEvent -> paneController.groupSelectedElements());
+        menuDeGroup.setOnAction(actionEvent -> paneController.deGroupSelectedElement());
+        mainPane.setOnMouseMoved(mouseEvent -> {
+            double x = mouseEvent.getX();
+            double y = mouseEvent.getY();
+            toolMousePos.setText("x : " + x + ", y : " + y);
+        });
     }
 }

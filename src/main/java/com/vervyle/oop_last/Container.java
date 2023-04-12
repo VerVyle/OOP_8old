@@ -3,15 +3,23 @@ package com.vervyle.oop_last;
 import com.vervyle.oop_last.containers.MyLinkedList;
 import com.vervyle.oop_last.containers.MyList;
 import com.vervyle.oop_last.drawable.Element;
+import com.vervyle.oop_last.drawable.GGroup;
 import com.vervyle.oop_last.drawable.Point2D;
 import javafx.scene.paint.Color;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.FileWriter;
 import java.util.Iterator;
 
 public class Container {
 
     private final MyList<Element> allElements;
     private MyList<Element> selectedElements;
+
+    public MyList<Element> getSelectedElements() {
+        return selectedElements;
+    }
 
     public Container() {
         allElements = new MyLinkedList<>();
@@ -20,11 +28,6 @@ public class Container {
 
     public void addElement(Element element) {
         allElements.add(element);
-    }
-
-    public void removeElement(Element element) {
-        element.hide();
-        allElements.remove(element);
     }
 
     private void selectElement(Element element) {
@@ -45,7 +48,7 @@ public class Container {
         element.hide();
     }
 
-    public void removeAllElements() {
+    public void deleteAllElements() {
         Iterator<Element> iterator = allElements.iterator();
         while (iterator.hasNext()) {
             deleteElement(iterator.next());
@@ -121,5 +124,36 @@ public class Container {
 
     public void resizeSelectedElements(double newRadius) {
         selectedElements.iterator().forEachRemaining(element -> element.resize(newRadius));
+    }
+
+    public void saveAllElements(String string) {
+        FileWriter fileWriter = null;
+        Iterator<Element> iterator;
+        JSONArray jsonArray = new JSONArray();
+        try {
+            fileWriter = new FileWriter(string);
+            iterator = allElements.iterator();
+            while (iterator.hasNext()) {
+                jsonArray.put(iterator.next().save());
+            }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("elements", jsonArray);
+            fileWriter.write(jsonObject.toString());
+            fileWriter.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void replaceGroupAndElements(GGroup gGroup) {
+        Iterator<Element> iterator = gGroup.getChildren().iterator();
+        Element element;
+        while (iterator.hasNext()) {
+            element = iterator.next();
+            allElements.remove(element);
+            deselectElement(element);
+        }
+        allElements.add(gGroup);
+        selectElement(gGroup);
     }
 }

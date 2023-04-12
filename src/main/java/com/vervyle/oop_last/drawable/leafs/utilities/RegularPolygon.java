@@ -6,6 +6,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public abstract class RegularPolygon extends Element {
     protected Color color;
@@ -100,8 +102,11 @@ public abstract class RegularPolygon extends Element {
         createShape();
         shape.setFill(color);
         show();
-        if (isSelected())
+        if (isSelected()) {
             select();
+            return;
+        }
+        deselect();
     }
 
     public void createShape() {
@@ -109,12 +114,21 @@ public abstract class RegularPolygon extends Element {
     }
 
     @Override
-    public void load() {
-        throw new UnsupportedOperationException();
-    }
-
-    // TODO: 03.04.2023 сделать залупу эту уже и сдать
-    @Override
-    public void save() {
+    public JSONObject save() {
+        JSONArray color_array = new JSONArray()
+                .put(color.getRed())
+                .put(color.getGreen())
+                .put(color.getBlue());
+        JSONArray point_array = new JSONArray()
+                .put(center.x())
+                .put(center.y());
+        JSONObject jsonObject = new JSONObject()
+                .put("type", this.getClass().getName())
+                .put("color", color_array)
+                .put("center", point_array)
+                .put("radius", radius)
+                .put("vertices", vertices);
+        System.out.println(jsonObject.toString());
+        return jsonObject;
     }
 }

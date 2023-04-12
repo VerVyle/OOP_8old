@@ -3,7 +3,7 @@ package com.vervyle.oop_last.drawable;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-public abstract class Element implements Savable, Loadable {
+public abstract class Element implements Savable {
 
     protected boolean selected;
     protected Pane pane;

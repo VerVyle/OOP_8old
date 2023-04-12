@@ -3,6 +3,7 @@ package com.vervyle.oop_last.controllers;
 import com.vervyle.oop_last.Container;
 import com.vervyle.oop_last.drawable.Element;
 import com.vervyle.oop_last.drawable.ElementType;
+import com.vervyle.oop_last.drawable.GGroup;
 import com.vervyle.oop_last.drawable.Point2D;
 import com.vervyle.oop_last.factories.ElementFactory;
 import com.vervyle.oop_last.factories.ElementFactoryImpl;
@@ -11,7 +12,11 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import java.io.*;
+import java.util.Iterator;
 import java.util.Objects;
 
 public class PaneController {
@@ -22,6 +27,47 @@ public class PaneController {
     private ListView<ElementType> toolElementList;
     private Container container;
     private ElementFactory elementFactory;
+
+    public void saveAllElements() {
+        container.saveAllElements(toolValue.getText() + ".json");
+    }
+
+    public void deleteAllElements() {
+        container.deleteAllElements();
+    }
+
+    public void loadPane() {
+        deleteAllElements();
+
+        FileReader fileReader = null;
+        BufferedReader bufferedReader = null;
+        JSONArray jsonArray;
+        Element element;
+        try {
+            fileReader = new FileReader(toolValue.getText() + ".json");
+            bufferedReader = new BufferedReader(fileReader);
+            String str = bufferedReader.readLine();
+            JSONObject jsonObject = new JSONObject(str);
+            jsonArray = jsonObject.getJSONArray("elements");
+            Iterator iterator = jsonArray.iterator();
+            while (iterator.hasNext()) {
+                jsonObject = (JSONObject) iterator.next();
+                element = elementFactory.createElement(jsonObject);
+                container.addElement(element);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void groupSelectedElements() {
+        GGroup group = (GGroup) elementFactory.createElement(container.getSelectedElements());
+        container.replaceGroupAndElements(group);
+    }
+
+    public void deGroupSelectedElement() {
+
+    }
 
     public enum Direction {
         RIGHT,
