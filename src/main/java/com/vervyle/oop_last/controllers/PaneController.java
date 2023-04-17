@@ -1,6 +1,7 @@
 package com.vervyle.oop_last.controllers;
 
 import com.vervyle.oop_last.Container;
+import com.vervyle.oop_last.containers.MyList;
 import com.vervyle.oop_last.drawable.Element;
 import com.vervyle.oop_last.drawable.ElementType;
 import com.vervyle.oop_last.drawable.GGroup;
@@ -62,11 +63,17 @@ public class PaneController {
 
     public void groupSelectedElements() {
         GGroup group = (GGroup) elementFactory.createElement(container.getSelectedElements());
-        container.replaceGroupAndElements(group);
+        container.replaceElementsWithGroup(group);
     }
 
-    public void deGroupSelectedElement() {
-
+    public void deGroupSelectedElements() {
+        MyList<Element> selected = container.getSelectedElements();
+        if ((selected.size() == 0) || !(selected.getLast() instanceof GGroup)) {
+            System.out.println("Selected element is not a Group!");
+            return;
+        }
+        GGroup group = (GGroup) selected.getLast();
+        container.replaceGroupWithElements(group);
     }
 
     public enum Direction {

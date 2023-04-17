@@ -145,7 +145,7 @@ public class Container {
         }
     }
 
-    public void replaceGroupAndElements(GGroup gGroup) {
+    public void replaceElementsWithGroup(GGroup gGroup) {
         Iterator<Element> iterator = gGroup.getChildren().iterator();
         Element element;
         while (iterator.hasNext()) {
@@ -155,5 +155,17 @@ public class Container {
         }
         allElements.add(gGroup);
         selectElement(gGroup);
+    }
+
+    public void replaceGroupWithElements(GGroup group) {
+        Iterator<Element> iterator = group.getChildren().iterator();
+        Element element;
+        while (iterator.hasNext()) {
+            element = iterator.next();
+            allElements.add(element);
+            selectedElements.add(element);
+        }
+        allElements.remove(group);
+        selectedElements.remove(group);
     }
 }

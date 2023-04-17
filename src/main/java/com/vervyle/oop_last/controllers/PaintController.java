@@ -122,7 +122,7 @@ public class PaintController implements Initializable {
         menuDeselectAll.setOnAction(actionEvent -> paneController.deselectAllElements());
         menuSelectAll.setOnAction(actionEvent -> paneController.selectAllElements());
         menuGroup.setOnAction(actionEvent -> paneController.groupSelectedElements());
-        menuDeGroup.setOnAction(actionEvent -> paneController.deGroupSelectedElement());
+        menuDeGroup.setOnAction(actionEvent -> paneController.deGroupSelectedElements());
         mainPane.setOnMouseMoved(mouseEvent -> {
             double x = mouseEvent.getX();
             double y = mouseEvent.getY();
